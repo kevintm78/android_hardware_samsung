@@ -1,4 +1,5 @@
-# Copyright (C) 2008 The Android Open Source Project
+#
+# Copyright (C) 2019 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-ifeq ($(BOARD_USES_HDMI),true)
-
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
-
-LOCAL_PRELINK_MODULE := false
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)
-LOCAL_SHARED_LIBRARIES := liblog libddc
-LOCAL_SRC_FILES := libedid.c
-
-LOCAL_C_INCLUDES := \
-	$(LOCAL_PATH) \
-	$(LOCAL_PATH)/../../../include
-
-LOCAL_MODULE := libedid
-include $(BUILD_SHARED_LIBRARY)
-
-endif
+include $(call all-subdir-makefiles)
