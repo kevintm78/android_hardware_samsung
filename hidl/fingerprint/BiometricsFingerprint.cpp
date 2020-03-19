@@ -315,6 +315,19 @@ void BiometricsFingerprint::notify(const fingerprint_msg_t* msg) {
                     ->onEnrollResult(devId, msg->data.enroll.finger.fid,
                                      msg->data.enroll.finger.gid, msg->data.enroll.samples_remaining)
                     .isOk()) {
+            LOG(DEBUG) << "onEnrollResult(fid=" << msg->data.enroll.finger.fid
+                       << ", gid=" << msg->data.enroll.finger.gid
+                       << ", rem=" << msg->data.enroll.samples_remaining << ")";
+            if (thisPtr->mClientCallback
+                    ->onEnrollResult(devId, msg->data.enroll.finger.fid,
+                                     msg->data.enroll.finger.gid, msg->data.enroll.samples_remaining)
+                    .isOk()) {
+#ifdef USES_PERCENTAGE_SAMPLES
+                fingerprint_msg_t* newMsg = (fingerprint_msg_t*)msg;
+                newMsg->data.enroll.samples_remaining = 100 - msg->data.enroll.samples_remaining;
+                msg = newMsg;
+#endif
+            } else {
                 LOG(ERROR) << "failed to invoke fingerprint onEnrollResult callback";
             }
             break;
